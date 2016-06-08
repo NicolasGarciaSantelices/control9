@@ -1,5 +1,6 @@
 #include <contacto.h>
 
+typedef struct nodo_i
 {
 	char nombre[LONG_FILENAME]; 
 	int claves[CLAVE_LENGTH];
