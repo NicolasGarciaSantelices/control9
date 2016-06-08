@@ -1,4 +1,5 @@
 #define LIMIT_NAMES 10
+#include<string.h>
 
 typedef struct contacto
 {
@@ -8,10 +9,6 @@ typedef struct contacto
 	int telefono;
 } Contacto;
 
-<<<<<<< HEAD
-
-
-=======
 //TDA Contacto.
 /*
 	1. Creé el contacto. (Reserve memoria)
@@ -23,4 +20,23 @@ typedef struct contacto
 
 	3. Liberar contacto de memoria.>w<
 */
->>>>>>> master
+
+
+Contacto **contacto_setNombre(Contacto contacto,char* nombre){
+    if((strlen(nombre)+1)<=LIMIT_NAMES){
+        (*contacto)->nombre=nombre;
+    }else{
+        printf("El nombre ingresado excede el maximo de caracteres permitidos ingrese otro nombre \n");
+    }
+}
+
+
+Contacto **contacto_setApellido(Contacto contacto,char* apellido){
+    if((strlen(apellido)+1)<=LIMIT_NAMES){
+        (*contacto)->nombre=apellido;
+    }else{
+        printf("El apellido ingresado excede el maximo de caracteres permitidos ingrese otro apellido \n");
+    }
+}
+
+
