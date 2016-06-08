@@ -5,6 +5,10 @@
 #define CLAVE_LENGTH 2*T
 #define HIJOS_LENGTH (2*T + 1)
 #define LONG_FILENAME 5
+#define NODO_HEADER_LENGTH 5
+
+#include "libs/nodo_hoja.h"
+#include "libs/nodo_interno.h"
 
 /*
 	Evaluación 2, Control 9.
