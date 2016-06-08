@@ -17,5 +17,5 @@ typedef struct contacto
 	contacto_setNombre(char* nombre);
 	contacto_setApellido(char* apellido);
 
-	3. Liberar contacto de memoria.
+	3. Liberar contacto de memoria.>w<
 */
