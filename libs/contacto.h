@@ -8,3 +8,5 @@ typedef struct contacto
 	char apellido[LIMIT_NAMES];
 	int telefono[MAX_TEL_LENGTH];
 } Contacto;
+
+//cambio pequeño
