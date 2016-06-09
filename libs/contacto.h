@@ -1,11 +1,12 @@
 #define LIMIT_NAMES 10
+#define LIMIT_PHONE 13
 
 typedef struct contacto
 {
 	int clave;
 	char nombre[LIMIT_NAMES];
 	char apellido[LIMIT_NAMES];
-	unsigned int telefono;
+	char telefono[LIMIT_PHONE];
 } Contacto;
 
 Contacto* contacto_Crear();
@@ -17,15 +18,15 @@ void contacto_setApellido(Contacto** contacto, char* apellido);
 Contacto* contacto_Crear() {
 	Contacto* nuevo = malloc(sizeof(Contacto));
 	nuevo->clave = -1;
-    strcpy(nuevo->nombre, "");
-<<<<<<< Updated upstream
-    strcpy(nuevo->apellido, "");;
-	nuevo->telefono = 0;
-=======
-    strcpy(nuevo->apellido, "");
-    //hay que ser demasiado torpe para llamar ese numero equisdeh' hio hio.
-	strcpy(nuevo->telefono, "+569000000000");
->>>>>>> Stashed changes
+    for (int i = 0; i < LIMIT_NAMES; ++i)
+    {
+        nuevo->nombre[i] = 0;
+        nuevo->apellido[i] = 0;
+    }
+    strcpy(nuevo->nombre, " ");
+    strcpy(nuevo->apellido, " ");
+    //hay que ser demasiado torpe para llamar ese numero :P
+	strcpy(nuevo->telefono, "+56900000000");
 	return nuevo;
 }
 
@@ -33,10 +34,11 @@ Contacto* contacto_Crear() {
 void contacto_setNombre(Contacto** contacto, char* nombre){
     if((strlen(nombre)+1) <= LIMIT_NAMES) {
     	strcpy((*contacto)->nombre, nombre);
+        (*contacto)->nombre[LIMIT_NAMES-1] = 0;
     }else{
         char Nnombre[LIMIT_NAMES];
         strncpy(Nnombre,nombre,LIMIT_NAMES);
-        Nnombre[LIMIT_NAMES-1]='\0';
+        Nnombre[LIMIT_NAMES-1] = 0;
         strcpy((*contacto)->nombre, Nnombre);
 
     }
@@ -45,10 +47,11 @@ void contacto_setNombre(Contacto** contacto, char* nombre){
 void contacto_setApellido(Contacto** contacto, char* apellido){
 	if((strlen(apellido)+1) <= LIMIT_NAMES) {
 		strcpy((*contacto)->apellido, apellido);
+        (*contacto)->apellido[LIMIT_NAMES-1] = 0;
 	}else{
         char Napellido[LIMIT_NAMES];
         strncpy(Napellido,apellido,LIMIT_NAMES);
-        Napellido[LIMIT_NAMES-1]='\0';
+        Napellido[LIMIT_NAMES-1] = 0;
         strcpy((*contacto)->apellido, Napellido);
 	}
 }

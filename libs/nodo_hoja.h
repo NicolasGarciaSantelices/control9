@@ -1,12 +1,16 @@
-#include "contacto.h"
+﻿#include "contacto.h"
 
-#define NODOHOJA_HEADER "nodo_h"
+#define NODOHOJA_HEADER 'H'
 
-//t = 17.
+#define K 55
+#define HOJA_CLAVES 2 * K
+
+
 typedef struct nodo_h
 {
+	int clave;
 	char nombre[LONG_FILENAME];
-	Contacto* contacto[CLAVE_LENGTH];
+	Contacto* contactos[HOJA_CLAVES];
 	int cantidadClaves;
 	char siguiente[LONG_FILENAME];
 } NodoHoja;
@@ -18,66 +22,49 @@ typedef struct nodo_h
 
 NodoHoja* nodohoja_Crear() {
 	NodoHoja* nuevo = malloc(sizeof(NodoHoja));
-	strcpy(nuevo->nombre, "");
-	strcpy(nuevo->siguiente, "");
-<<<<<<< Updated upstream
-
-	for (int i = 0; i < CLAVE_LENGTH; ++i)
-=======
-	for (int i = 0; i < HOJA_CLAVES; ++i)
->>>>>>> Stashed changes
-	{
-		nuevo->contactos[i] = NULL;
-	}
+	nuevo->clave = 0;
 	nuevo->cantidadClaves = 0;
+	strcpy(nuevo->nombre, "0000");
+	strcpy(nuevo->siguiente, "0000");
+	nuevo->nombre[LONG_FILENAME-1]  = 0;
+	nuevo->siguiente[LONG_FILENAME-1]  = 0;
+
+	for (int i = 0; i < HOJA_CLAVES; ++i)
+	{
+		nuevo->contactos[i] = contacto_Crear();
+	}
 	return nuevo;
 }
 
-void nodohoja_Guardar(NodoHoja** nodo, char* nombre) {
-    char _HEADER=NODOHOJA_HEADER;
-	if(nodo != NULL) {
-		FILE* file = fopen(nombre, "wb");
+void nodohoja_Guardar(NodoHoja** nodo) {
+    char _header = NODOHOJA_HEADER;
+	if(*nodo != NULL) {
+		FILE* file = fopen((*nodo)->nombre, "wb");
 
 		//Cabezal que indicará el tipo de nodo a guardar.
-<<<<<<< Updated upstream
-		fwrite(NODOHOJA_HEADER, sizeof(char), NODO_HEADER_LENGTH, file);
-=======
-		fwrite(&_HEADER, sizeof(char),1, file);
->>>>>>> Stashed changes
+		fwrite(&_header, sizeof(char),1, file);
 
 		//Nombre del nodo.
 		fwrite((*nodo)->nombre, sizeof(char), LONG_FILENAME, file);
 
 		//Cantidad de Claves.
-		fwrite(&(*nodo)->cantidadClaves, sizeof(int), LONG_FILENAME, file);
+		fwrite(&(*nodo)->cantidadClaves, sizeof(int), 1, file);
 
 		//Siguiente Nodo (Nombre).
 		fwrite((*nodo)->siguiente, sizeof(int), LONG_FILENAME, file);
 
-<<<<<<< Updated upstream
-		//Escribiendo cada contacto.
-		for (int i = 0; i < CLAVE_LENGTH; ++i)
-		{
-			if((*nodo)->contacto[i] != NULL) {
-				fwrite(&((*nodo)->contacto[i])->clave, sizeof(int), 1, file);
-				fwrite(((*nodo)->contacto[i])->nombre, sizeof(char), LIMIT_NAMES, file);
-				fwrite(((*nodo)->contacto[i])->apellido, sizeof(char), LIMIT_NAMES, file);
-				fwrite(&((*nodo)->contacto[i])->telefono, sizeof(unsigned int), 1, file);
-=======
 		//Escribiendo cada contacto. 
 		for (int i = 0; i < HOJA_CLAVES; ++i)
 		{
-			if((*nodo)->contactos[i] != NULL) {
-				//clave
-				fwrite(&((*nodo)->contactos[i])->clave, sizeof(int), 1, file);
-				//nombre
-				fwrite(((*nodo)->contactos[i])->nombre, sizeof(char), LIMIT_NAMES, file);
-				//apellido
-				fwrite(((*nodo)->contactos[i])->apellido, sizeof(char), LIMIT_NAMES, file);
-				//Telefono
-				fwrite(&((*nodo)->contactos[i])->telefono, sizeof(unsigned int), 1, file);
->>>>>>> Stashed changes
-			}
+			//clave
+			fwrite(&((*nodo)->contactos[i])->clave, sizeof(int), 1, file);
+			//nombre
+			fwrite(((*nodo)->contactos[i])->nombre, sizeof(char), LIMIT_NAMES, file);
+			//apellido
+			fwrite(((*nodo)->contactos[i])->apellido, sizeof(char), LIMIT_NAMES, file);
+			//Telefono
+			fwrite(((*nodo)->contactos[i])->telefono, sizeof(char), LIMIT_PHONE, file);
+
 		}
 
 		fclose(file);
@@ -91,12 +78,11 @@ NodoHoja* nodohoja_Cargar(char* nombre) {
 	if(fp != NULL) {
 
 		//Leyendo el tipo de archivo mediante el cabezal.
-		char _typeHeaderCheck[NODO_HEADER_LENGTH];
-		fread(_typeHeaderCheck, sizeof(char), NODO_HEADER_LENGTH, fp);
+		char _typeHeaderCheck;
+		fread(&_typeHeaderCheck, sizeof(char), 1, fp);
 
 		//Comprobando el tipo de archivo mediante el cabezal.
-		if(strcmp(_typeHeaderCheck, NODOHOJA_HEADER) == 0) {
-			//TODO: Crear esto...
+		if(_typeHeaderCheck == NODOHOJA_HEADER) {
 			nuevo = nodohoja_Crear();
 
 			//Nombre del nodo
@@ -111,18 +97,6 @@ NodoHoja* nodohoja_Cargar(char* nombre) {
 			//Lectura de contactos disponibles.
 			for (int i = 0; i < HOJA_CLAVES; ++i)
 			{
-<<<<<<< Updated upstream
-				//Si se llega al final del archivo.
-				if(!feof(fp)) {
-					//TODO: Crear esto...
-					nuevo->contacto[i] = contacto_Crear();
-					fread(&(nuevo->contacto[i])->clave, sizeof(int), 1, fp);
-					fread((nuevo->contacto[i])->nombre, sizeof(char), LIMIT_NAMES, fp);
-					fread((nuevo->contacto[i])->apellido, sizeof(char), LIMIT_NAMES, fp);
-					fread(&(nuevo->contacto[i])->telefono, sizeof(unsigned int), 1, fp);
-				} else {
-					nuevo->contacto[i] = NULL;
-=======
 				nuevo->contactos[i] = contacto_Crear();
 				
 				//Si se llega al final del archivo.
@@ -130,11 +104,9 @@ NodoHoja* nodohoja_Cargar(char* nombre) {
 					fread(&(nuevo->contactos[i])->clave, sizeof(int), 1, fp);
 					fread((nuevo->contactos[i])->nombre, sizeof(char), LIMIT_NAMES, fp);
 					fread((nuevo->contactos[i])->apellido, sizeof(char), LIMIT_NAMES, fp);
-					fread(&(nuevo->contactos[i])->telefono, sizeof(char),LIMIT_PHONE, fp);
->>>>>>> Stashed changes
+					fread((nuevo->contactos[i])->telefono, sizeof(char),LIMIT_PHONE, fp);
 				}
 			}
-
 			fclose(fp);
 		} else {
 			printf("El nodo a cargar no es de tipo hoja.\n");

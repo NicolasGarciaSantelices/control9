@@ -20,12 +20,29 @@ typedef struct nodo_i
 	> Eliminar clave del arreglo en nodo.
 	> Guardar / Cargar.
 */
-<<<<<<< Updated upstream
 
-=======
 NodoInterno* nodointer_Crear();
 
-int nodointer_liberar(NodoInterno *Nodo){
+NodoInterno* nodointer_Crear() {
+	NodoInterno* nuevo = malloc(sizeof(NodoInterno));
+
+	for (int j = 0; j < LONG_FILENAME; ++j)
+			nuevo->nombre[j] = 0;
+
+	for (int i = 0; i < INTER_HIJOS; ++i)
+	{
+		for (int j = 0; j < LONG_FILENAME; ++j)
+			nuevo->hijos[i][j] = 0;
+	}
+
+	for (int i = 0; i < INTER_CLAVES; ++i)
+		nuevo->claves[i] = -1;
+
+	nuevo->cantidadClaves = 0;
+	return nuevo;
+}
+
+int nodointer_Liberar(NodoInterno *Nodo){
     if(Nodo!=NULL){
         free(Nodo->nombre);
         free(Nodo->claves);
@@ -39,19 +56,21 @@ int nodointer_liberar(NodoInterno *Nodo){
 
 NodoInterno* nodointer_cargar(char *nombre){
     NodoInterno* nuevo_nodo;
-    FILE *file=fopen(nombre, "rb");
-    if(file!=NULL){
+    FILE *file = fopen(nombre, "rb");
+
+    if(file != NULL){
         char _typeHeaderCheck;
         fread(&_typeHeaderCheck, sizeof(char),1, file);
-        if(_typeHeaderCheck==NODOINTER_HEADER){
-            nuevo_nodo=nodointer_Crear();
+
+        if(_typeHeaderCheck == NODOINTER_HEADER){
+            nuevo_nodo = nodointer_Crear();
             fread(nuevo_nodo->nombre, sizeof(char), LONG_FILENAME, file);
-            fread(nuevo_nodo->claves,sizeof(int),INTER_CLAVES, file);
+            fread(nuevo_nodo->claves, sizeof(int), INTER_CLAVES, file);
             fread(&nuevo_nodo->cantidadClaves, sizeof(int), 1, file);
             for (int i = 0; i < INTER_HIJOS; ++i)
             {
                 if(!feof(file)) {
-                    fread(nuevo_nodo->hijos[i],sizeof(char),LONG_FILENAME,file);
+                    fread(nuevo_nodo->hijos[i], sizeof(char),LONG_FILENAME, file);
                 }
             }
             fclose(file);
@@ -66,31 +85,14 @@ NodoInterno* nodointer_cargar(char *nombre){
     return nuevo_nodo;
 }
 
-    
->>>>>>> Stashed changes
-NodoInterno* nodointer_Crear() {
-	NodoInterno* nuevo = malloc(sizeof(NodoInterno));
-	strcpy(nuevo->nombre, "");
-	for (int i = 0; i < INTER_HIJOS; ++i)
-	{
-		strcpy(nuevo->hijos[i], "");
-	}
-	for (int i = 0; i < INTER_CLAVES; ++i)
-	{
-		nuevo->claves[i] = -1;
-	}
-	nuevo->cantidadClaves = 0;
-	return nuevo;
-}
-
 void nodointer_Guardar(NodoInterno* nodo, char* nombre) {
-    char _HEADER=NODOINTER_HEADER;
+    char _header = NODOINTER_HEADER;
 	FILE *file = fopen(nombre, "wb");
 
 	if(nodo != NULL) {
 		if(file != NULL) {
 			//Escribiendo tipo de nodo como cabezal.
-			fwrite(&_HEADER, sizeof(char), 1, file);
+			fwrite(&_header, sizeof(char), 1, file);
 
 			//Nombre del nodo
 			fwrite(nodo->nombre, sizeof(char), LONG_FILENAME, file);
