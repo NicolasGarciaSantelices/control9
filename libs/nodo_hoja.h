@@ -46,12 +46,12 @@ void nodohoja_Guardar(NodoHoja** nodo) {
 
 		//Nombre del nodo.
 		fwrite((*nodo)->nombre, sizeof(char), LONG_FILENAME, file);
-
+        
 		//Cantidad de Claves.
 		fwrite(&(*nodo)->cantidadClaves, sizeof(int), 1, file);
 
 		//Siguiente Nodo (Nombre).
-		fwrite((*nodo)->siguiente, sizeof(int), LONG_FILENAME, file);
+		fwrite((*nodo)->siguiente, sizeof(char), LONG_FILENAME, file);
 
 		//Escribiendo cada contacto. 
 		for (int i = 0; i < HOJA_CLAVES; ++i)
