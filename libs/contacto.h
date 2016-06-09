@@ -17,8 +17,8 @@ void contacto_setApellido(Contacto** contacto, char* apellido);
 Contacto* contacto_Crear() {
 	Contacto* nuevo = malloc(sizeof(Contacto));
 	nuevo->clave = -1;
-	contacto_setNombre(&nuevo, "");
-	contacto_setApellido(&nuevo, "");
+    strcpy(nuevo->nombre, "");
+    strcpy(nuevo->apellido, "");;
 	nuevo->telefono = 0;
 	return nuevo;
 }
@@ -44,10 +44,6 @@ void contacto_setApellido(Contacto** contacto, char* apellido){
         strncpy(Napellido,apellido,LIMIT_NAMES);
         Napellido[LIMIT_NAMES-1]='\0';
         strcpy((*contacto)->apellido, Napellido);
-<<<<<<< HEAD
-        free(Napellido);
-=======
->>>>>>> brdws-changes
 	}
 }
 
