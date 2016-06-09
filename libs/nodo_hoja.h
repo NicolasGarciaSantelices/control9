@@ -2,8 +2,8 @@
 
 #define NODOHOJA_HEADER 'H'
 
-#define K 74
-#define HOJA_CLAVES 2*K
+#define K 55
+#define HOJA_CLAVES 2 * K
 
 
 typedef struct nodo_h
@@ -22,30 +22,33 @@ typedef struct nodo_h
 
 NodoHoja* nodohoja_Crear() {
 	NodoHoja* nuevo = malloc(sizeof(NodoHoja));
-	strcpy(nuevo->nombre, "");
-	strcpy(nuevo->siguiente, "");
+	nuevo->clave = 0;
+	nuevo->cantidadClaves = 0;
+	strcpy(nuevo->nombre, "0000");
+	strcpy(nuevo->siguiente, "0000");
+	nuevo->nombre[LONG_FILENAME-1]  = 0;
+	nuevo->siguiente[LONG_FILENAME-1]  = 0;
 
 	for (int i = 0; i < HOJA_CLAVES; ++i)
 	{
-		nuevo->contactos[i] = NULL;
+		nuevo->contactos[i] = contacto_Crear();
 	}
-	nuevo->cantidadClaves = 0;
 	return nuevo;
 }
 
-void nodohoja_Guardar(NodoHoja** nodo, char* nombre) {
-    char _HEADER=NODOHOJA_HEADER;
-	if(nodo != NULL) {
-		FILE* file = fopen(nombre, "wb");
+void nodohoja_Guardar(NodoHoja** nodo) {
+    char _header = NODOHOJA_HEADER;
+	if(*nodo != NULL) {
+		FILE* file = fopen((*nodo)->nombre, "wb");
 
 		//Cabezal que indicará el tipo de nodo a guardar.
-		fwrite(&_HEADER, sizeof(char),1, file);
+		fwrite(&_header, sizeof(char),1, file);
 
 		//Nombre del nodo.
 		fwrite((*nodo)->nombre, sizeof(char), LONG_FILENAME, file);
 
 		//Cantidad de Claves.
-		fwrite(&(*nodo)->cantidadClaves, sizeof(int), LONG_FILENAME, file);
+		fwrite(&(*nodo)->cantidadClaves, sizeof(int), 1, file);
 
 		//Siguiente Nodo (Nombre).
 		fwrite((*nodo)->siguiente, sizeof(int), LONG_FILENAME, file);
@@ -53,16 +56,15 @@ void nodohoja_Guardar(NodoHoja** nodo, char* nombre) {
 		//Escribiendo cada contacto. 
 		for (int i = 0; i < HOJA_CLAVES; ++i)
 		{
-			if((*nodo)->contactos[i] != NULL) {
-				//clave
-				fwrite(&((*nodo)->contactos[i])->clave, sizeof(int), 1, file);
-				//nombre
-				fwrite(((*nodo)->contactos[i])->nombre, sizeof(char), LIMIT_NAMES, file);
-				//apellido
-				fwrite(((*nodo)->contactos[i])->apellido, sizeof(char), LIMIT_NAMES, file);
-				//Telefono
-				fwrite(&((*nodo)->contactos[i])->telefono, sizeof(unsigned int), 1, file);
-			}
+			//clave
+			fwrite(&((*nodo)->contactos[i])->clave, sizeof(int), 1, file);
+			//nombre
+			fwrite(((*nodo)->contactos[i])->nombre, sizeof(char), LIMIT_NAMES, file);
+			//apellido
+			fwrite(((*nodo)->contactos[i])->apellido, sizeof(char), LIMIT_NAMES, file);
+			//Telefono
+			fwrite(((*nodo)->contactos[i])->telefono, sizeof(char), LIMIT_PHONE, file);
+
 		}
 
 		fclose(file);
@@ -102,7 +104,7 @@ NodoHoja* nodohoja_Cargar(char* nombre) {
 					fread(&(nuevo->contactos[i])->clave, sizeof(int), 1, fp);
 					fread((nuevo->contactos[i])->nombre, sizeof(char), LIMIT_NAMES, fp);
 					fread((nuevo->contactos[i])->apellido, sizeof(char), LIMIT_NAMES, fp);
-					fread(&(nuevo->contactos[i])->telefono, sizeof(char),LIMIT_PHONE, fp);
+					fread((nuevo->contactos[i])->telefono, sizeof(char),LIMIT_PHONE, fp);
 				}
 			}
 			fclose(fp);

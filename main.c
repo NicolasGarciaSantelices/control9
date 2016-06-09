@@ -1,18 +1,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "libs/sandbox_utils.h"
 
 #define LONG_FILENAME 5
-#define NODO_HEADER_LENGTH 5
 
-/*
-	Duda:
-	Quizá se requiera una estructura 
-	para reunir ambos tipos de nodos
-*/
 #include "libs/nodo_hoja.h"
 #include "libs/nodo_interno.h"
+
+//Archivo util para funciones de testeo.
+#include "libs/sandbox_utils.h"
 
 /*
 	Evaluación 2, Control 9.
@@ -26,8 +22,11 @@
 	Prof. Mauro San Martín.
 */
 
+
 int main(int argc, char const *argv[])
 {
 	//Hola Mundo!.
+	NodoHoja* t = sandbox_newHoja();
+	nodohoja_Guardar(&t);
 	return 0;
 }
