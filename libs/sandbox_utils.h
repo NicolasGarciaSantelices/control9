@@ -30,7 +30,7 @@ char* nombres[25] = {
     "Bruce",
     "Peter",
     "Catalina",
-    "Mauricio",
+    "Mauricio"
 };
 	
 char* apellidos[25] = {
@@ -58,7 +58,7 @@ char* apellidos[25] = {
     "Tapia",
     "Arcos",
     "Morales",
-    "Vega",
+    "Vega"
 };
 
 /* Obtener clave random */
@@ -72,10 +72,28 @@ char* sandbox_getRandomNombre() {
 	int r = sandbox_getRandomKey() % 10;
 	return nombres[r];
 }
-/* Obtiene un nombre al azar*/
+/* Obtiene un apellido al azar*/
 char* sandbox_getRandomApellido() {
 	int r = sandbox_getRandomKey() % 10;
 	return apellidos[r];
+}
+
+/* Obtiene un numero telefonico al azar */
+char* sandbox_getRandomPhone(){
+	char* telefono = malloc(sizeof(char) * LIMIT_PHONE);
+
+    telefono[0]='+';
+    telefono[1]='5';
+    telefono[2]='6';
+    telefono[3]='9';
+
+    srand(time(NULL));
+    for(int i = 4; i < 11; i++){
+    	int d = rand() % 10;
+        telefono[i] = '0' + d;	//int to Char from stackOverflow.
+    }
+    telefono[12] = 0;
+    return telefono;
 }
 
 Contacto* sandbox_newContacto(int clave, char* nombre, char* apellido, char* telefono){
@@ -90,7 +108,10 @@ Contacto* sandbox_newContacto(int clave, char* nombre, char* apellido, char* tel
 NodoHoja* sandbox_newHoja() {
 	NodoHoja* nuevo = nodohoja_Crear();
 	nuevo->clave = 1;
-	nuevo->contactos[0] = sandbox_newContacto(10,sandbox_getRandomNombre(),sandbox_getRandomApellido(),"+56965232502");
+	nuevo->contactos[0] = sandbox_newContacto(10,
+		sandbox_getRandomNombre(),
+		sandbox_getRandomApellido(),
+		sandbox_getRandomPhone());
 	nuevo->cantidadClaves++;
 	return nuevo;
 }
