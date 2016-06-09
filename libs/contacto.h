@@ -42,7 +42,7 @@ void contacto_setApellido(Contacto** contacto, char* apellido){
         char Napellido[LIMIT_NAMES];
         strncpy(Napellido,apellido,LIMIT_NAMES);
         Napellido[LIMIT_NAMES-1]='\0';
-        strcpy((*contacto)->nombre, Napellido);
+        strcpy((*contacto)->apellido, Napellido);
         free(Napellido);
 	}
 }
