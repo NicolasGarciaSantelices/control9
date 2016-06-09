@@ -44,12 +44,12 @@ NodoInterno* nodointer_cargar(char *nombre){
         if(_typeHeaderCheck==NODOINTER_HEADER){
             nuevo_nodo=nodointer_Crear();
             fread(nuevo_nodo->nombre, sizeof(char), LONG_FILENAME, file);
-            fread(nuevo_nodo->claves,sizeof(int),INTER_CLAVES, file);
+            fread(nuevo_nodo->claves, sizeof(int), INTER_CLAVES, file);
             fread(&nuevo_nodo->cantidadClaves, sizeof(int), 1, file);
             for (int i = 0; i < INTER_HIJOS; ++i)
             {
                 if(!feof(file)) {
-                    fread(nuevo_nodo->hijos[i],sizeof(char),LONG_FILENAME,file);
+                    fread(nuevo_nodo->hijos[i], sizeof(char),LONG_FILENAME, file);
                 }
             }
             fclose(file);
@@ -81,13 +81,13 @@ NodoInterno* nodointer_Crear() {
 }
 
 void nodointer_Guardar(NodoInterno* nodo, char* nombre) {
-    char _HEADER=NODOINTER_HEADER;
+    char _header = NODOINTER_HEADER;
 	FILE *file = fopen(nombre, "wb");
 
 	if(nodo != NULL) {
 		if(file != NULL) {
 			//Escribiendo tipo de nodo como cabezal.
-			fwrite(&_HEADER, sizeof(char), 1, file);
+			fwrite(&_header, sizeof(char), 1, file);
 
 			//Nombre del nodo
 			fwrite(nodo->nombre, sizeof(char), LONG_FILENAME, file);
