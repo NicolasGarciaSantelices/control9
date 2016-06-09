@@ -4,7 +4,7 @@
 typedef struct nodo_h
 {
 	char* nombre;
-	Contacto *contacto[CLAVE_LENGTH];
+	Contacto* contacto[CLAVE_LENGTH];
 	int cantidadClaves;
 	struct nodo_h* siguiente;
 } NodoHoja;
@@ -18,7 +18,6 @@ typedef struct nodo_h
 */
 
 NodoHoja *crearHoja(){
-	
 	NodoHoja *auxHoja=malloc(sizeof(NodoHoja));
 	int i;
 	for(i=0;i<CLAVE_LENGTH;i++);{
@@ -30,4 +29,15 @@ NodoHoja *crearHoja(){
 	return (auxHoja);
 }
 
+
+
+/*NodoHoja *LibararHoja(NodoHoja *Hojas,int ){
+	if(Hojas == NULL)	return -1;
+	if(Hojas->cantidadClaves == CLAVE_LENGTH){
+		
+	}else{
+		
+	}
+}
+*/
 
