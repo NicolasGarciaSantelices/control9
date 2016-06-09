@@ -1,12 +1,12 @@
 #include "contacto.h"
 
-#define NODOHOJA_HEADER "nodo_h"
+#define NODOHOJA_HEADER 'h'
 
 //t = 17.
 typedef struct nodo_h
 {
 	char nombre[LONG_FILENAME];
-	Contacto* contacto[CLAVE_LENGTH];
+	Contacto* contacto[HIJOS_LENGTH];
 	int cantidadClaves;
 	char siguiente[LONG_FILENAME];
 } NodoHoja;
@@ -20,7 +20,6 @@ NodoHoja* nodohoja_Crear() {
 	NodoHoja* nuevo = malloc(sizeof(NodoHoja));
 	strcpy(nuevo->nombre, "");
 	strcpy(nuevo->siguiente, "");
-
 	for (int i = 0; i < CLAVE_LENGTH; ++i)
 	{
 		nuevo->contacto[i] = NULL;
@@ -67,11 +66,10 @@ NodoHoja* nodohoja_Cargar(char* nombre) {
 	if(fp != NULL) {
 
 		//Leyendo el tipo de archivo mediante el cabezal.
-		char _typeHeaderCheck[NODO_HEADER_LENGTH];
-		fread(_typeHeaderCheck, sizeof(char), NODO_HEADER_LENGTH, fp);
-
+        char _typeHeaderCheck;
+        fread(&_typeHeaderCheck, sizeof(char),1, fp);
 		//Comprobando el tipo de archivo mediante el cabezal.
-		if(strcmp(_typeHeaderCheck, NODOHOJA_HEADER) == 0) {
+		if(_typeHeaderCheck==NODOHOJA_HEADER){
 			//TODO: Crear esto...
 			nuevo = nodohoja_Crear();
 

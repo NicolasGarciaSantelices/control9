@@ -5,7 +5,7 @@ typedef struct contacto
 	int clave;
 	char nombre[LIMIT_NAMES];
 	char apellido[LIMIT_NAMES];
-	unsigned int telefono;
+	unsigned long telefono;
 } Contacto;
 
 Contacto* contacto_Crear();
