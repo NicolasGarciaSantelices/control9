@@ -19,7 +19,7 @@ Contacto* contacto_Crear() {
 	Contacto* nuevo = malloc(sizeof(Contacto));
 	nuevo->clave = -1;
     strcpy(nuevo->nombre, "");
-    strcpy(nuevo->apellido, "")
+    strcpy(nuevo->apellido, "");
     //hay que ser demasiado torpe para llamar ese numero equisdeh' hio hio.
 	strcpy(nuevo->telefono, "+569000000000");
 	return nuevo;

@@ -21,6 +21,50 @@ typedef struct nodo_i
 	> Guardar / Cargar.
 */
 
+NodoInterno* nodointer_Crear();
+
+int nodointer_liberar(NodoInterno *Nodo){
+    if(Nodo!=NULL){
+        free(Nodo->nombre);
+        free(Nodo->claves);
+        free(Nodo->hijos);
+        free(Nodo);
+        return 1;
+    }else{
+        return 0;
+    }
+}
+
+NodoInterno* nodointer_cargar(char *nombre){
+    NodoInterno* nuevo_nodo;
+    FILE *file=fopen(nombre, "rb");
+    if(file!=NULL){
+        char _typeHeaderCheck;
+        fread(&_typeHeaderCheck, sizeof(char),1, file);
+        if(_typeHeaderCheck==NODOINTER_HEADER){
+            nuevo_nodo=nodointer_Crear();
+            fread(nuevo_nodo->nombre, sizeof(char), LONG_FILENAME, file);
+            fread(nuevo_nodo->claves,sizeof(int),INTER_CLAVES, file);
+            fread(&nuevo_nodo->cantidadClaves, sizeof(int), 1, file);
+            for (int i = 0; i < INTER_HIJOS; ++i)
+            {
+                if(!feof(file)) {
+                    fread(nuevo_nodo->hijos[i],sizeof(char),LONG_FILENAME,file);
+                }
+            }
+            fclose(file);
+            
+        }else{
+            printf("El nodo a cargar no es de tipo interno.\n");
+        }
+    
+    }else{
+        printf("Imposible cargar el nodo interno: %s\n", nombre);
+    }
+    return nuevo_nodo;
+}
+
+    
 NodoInterno* nodointer_Crear() {
 	NodoInterno* nuevo = malloc(sizeof(NodoInterno));
 	strcpy(nuevo->nombre, "");
@@ -37,21 +81,22 @@ NodoInterno* nodointer_Crear() {
 }
 
 void nodointer_Guardar(NodoInterno* nodo, char* nombre) {
+    char _HEADER=NODOINTER_HEADER;
 	FILE *file = fopen(nombre, "wb");
 
 	if(nodo != NULL) {
 		if(file != NULL) {
-			//Escribiendo tipo de nodo como cabezal. (6 * 1 bytes = 6)
-			fwrite(NODOINTER_HEADER, sizeof(char), NODO_HEADER_LENGTH, file);
+			//Escribiendo tipo de nodo como cabezal.
+			fwrite(&_HEADER, sizeof(char), 1, file);
 
-			//Nombre del nodo (5 * 1 byte = 5 bytes)
+			//Nombre del nodo
 			fwrite(nodo->nombre, sizeof(char), LONG_FILENAME, file);
-			//Cantidad de Claves (4 bytes)
+			//Cantidad de Claves
 			fwrite(&nodo->cantidadClaves, sizeof(int), 1, file);
-			//Claves (2 * 4 bytes = 8 bytes)
+			//Claves
 			fwrite(nodo->claves, sizeof(int), INTER_CLAVES, file);
 
-			//Nombre de los hijos (5 * 3 * 1 bytes = 15 bytes)
+			//Nombre de los hijos
 			for (int i = 0; i < INTER_HIJOS; ++i)
 			{
 				fwrite(nodo->hijos[i], sizeof(char), LONG_FILENAME, file);

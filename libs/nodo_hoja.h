@@ -1,12 +1,11 @@
-#include "contacto.h"
+﻿#include "contacto.h"
 
 #define NODOHOJA_HEADER 'H'
 
 #define K 74
 #define HOJA_CLAVES 2*K
- 
 
-//t = 17.
+
 typedef struct nodo_h
 {
 	int clave;
@@ -26,20 +25,21 @@ NodoHoja* nodohoja_Crear() {
 	strcpy(nuevo->nombre, "");
 	strcpy(nuevo->siguiente, "");
 
-	for (int i = 0; i < CLAVE_LENGTH; ++i)
+	for (int i = 0; i < HOJA_CLAVES; ++i)
 	{
-		nuevo->contacto[i] = NULL;
+		nuevo->contactos[i] = NULL;
 	}
 	nuevo->cantidadClaves = 0;
 	return nuevo;
 }
 
 void nodohoja_Guardar(NodoHoja** nodo, char* nombre) {
+    char _HEADER=NODOHOJA_HEADER;
 	if(nodo != NULL) {
 		FILE* file = fopen(nombre, "wb");
 
-		//Cabezal que indicará el tipo de nodo a guardar. (6 * 1 byte = 5 bytes)
-		fwrite(NODOHOJA_HEADER, sizeof(char), NODO_HEADER_LENGTH, file);
+		//Cabezal que indicará el tipo de nodo a guardar.
+		fwrite(&_HEADER, sizeof(char),1, file);
 
 		//Nombre del nodo. (5 * 1 byte = 5 bytes)
 		fwrite((*nodo)->nombre, sizeof(char), LONG_FILENAME, file);
@@ -51,7 +51,7 @@ void nodohoja_Guardar(NodoHoja** nodo, char* nombre) {
 		fwrite((*nodo)->siguiente, sizeof(int), LONG_FILENAME, file);
 
 		//Escribiendo cada contacto. 
-		for (int i = 0; i < HIJOS_LENGTH; ++i)
+		for (int i = 0; i < CLAVE_LENGTH; ++i)
 		{
 			if((*nodo)->contacto[i] != NULL) {
 				//clave (4 bytes)
@@ -62,6 +62,19 @@ void nodohoja_Guardar(NodoHoja** nodo, char* nombre) {
 				fwrite(((*nodo)->contacto[i])->apellido, sizeof(char), LIMIT_NAMES, file);
 				//Telefono (4 bytes por el compilador)
 				fwrite(&((*nodo)->contacto[i])->telefono, sizeof(unsigned int), 1, file);
+
+		//Escribiendo cada contacto. 
+		for (int i = 0; i < HOJA_CLAVES; ++i)
+		{
+			if((*nodo)->contactos[i] != NULL) {
+				//clave
+				fwrite(&((*nodo)->contactos[i])->clave, sizeof(int), 1, file);
+				//nombre
+				fwrite(((*nodo)->contactos[i])->nombre, sizeof(char), LIMIT_NAMES, file);
+				//apellido
+				fwrite(((*nodo)->contactos[i])->apellido, sizeof(char), LIMIT_NAMES, file);
+				//Telefono
+				fwrite(&((*nodo)->contactos[i])->telefono, sizeof(unsigned int), 1, file);
 			}
 		}
 
@@ -93,19 +106,28 @@ NodoHoja* nodohoja_Cargar(char* nombre) {
 			fread(&nuevo->siguiente, sizeof(char), LONG_FILENAME, fp);
 
 			//Lectura de contactos disponibles.
-			for (int i = 0; i < CLAVE_LENGTH; ++i)
+			for (int i = 0; i < HOJA_CLAVES; ++i)
 			{
 				nuevo->contacto[i] = contacto_Crear();
-				
+
 				//Si se llega al final del archivo.
 				if(!feof(fp)) {
 					fread(&(nuevo->contacto[i])->clave, sizeof(int), 1, fp);
 					fread((nuevo->contacto[i])->nombre, sizeof(char), LIMIT_NAMES, fp);
 					fread((nuevo->contacto[i])->apellido, sizeof(char), LIMIT_NAMES, fp);
 					fread(&(nuevo->contacto[i])->telefono, sizeof(unsigned int), 1, fp);
+				} else {
+					nuevo->contacto[i] = NULL;
+					nuevo->contactos[i] = contacto_Crear();
+				
+				//Si se llega al final del archivo.
+				if(!feof(fp)) {
+					fread(&(nuevo->contactos[i])->clave, sizeof(int), 1, fp);
+					fread((nuevo->contactos[i])->nombre, sizeof(char), LIMIT_NAMES, fp);
+					fread((nuevo->contactos[i])->apellido, sizeof(char), LIMIT_NAMES, fp);
+					fread(&(nuevo->contactos[i])->telefono, sizeof(char),LIMIT_PHONE, fp);
 				}
 			}
-
 			fclose(fp);
 		} else {
 			printf("El nodo a cargar no es de tipo hoja.\n");
