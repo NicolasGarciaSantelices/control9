@@ -7,6 +7,11 @@
 #define LONG_FILENAME 5
 #define NODO_HEADER_LENGTH 5
 
+/*
+	Duda:
+	Quizá se requiera una estructura 
+	para reunir ambos tipos de nodos
+*/
 #include "libs/nodo_hoja.h"
 #include "libs/nodo_interno.h"
 
@@ -19,7 +24,7 @@
 	Nicolas Garcia Santelices.
 
 	Estructura de Datos :: Ingecomp. :: Universidad de La Serena, 2016.
-	Prof. Mauro.
+	Prof. Mauro San Martín.
 */
 
 int main(int argc, char const *argv[])
