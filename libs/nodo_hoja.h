@@ -72,7 +72,6 @@ NodoHoja* nodohoja_Cargar(char* nombre) {
 
 		//Comprobando el tipo de archivo mediante el cabezal.
 		if(strcmp(_typeHeaderCheck, NODOHOJA_HEADER) == 0) {
-			//TODO: Crear esto...
 			nuevo = nodohoja_Crear();
 
 			//Nombre del nodo
@@ -87,16 +86,14 @@ NodoHoja* nodohoja_Cargar(char* nombre) {
 			//Lectura de contactos disponibles.
 			for (int i = 0; i < CLAVE_LENGTH; ++i)
 			{
+				nuevo->contacto[i] = contacto_Crear();
+				
 				//Si se llega al final del archivo.
 				if(!feof(fp)) {
-					//TODO: Crear esto...
-					nuevo->contacto[i] = contacto_Crear();
 					fread(&(nuevo->contacto[i])->clave, sizeof(int), 1, fp);
 					fread((nuevo->contacto[i])->nombre, sizeof(char), LIMIT_NAMES, fp);
 					fread((nuevo->contacto[i])->apellido, sizeof(char), LIMIT_NAMES, fp);
 					fread(&(nuevo->contacto[i])->telefono, sizeof(unsigned int), 1, fp);
-				} else {
-					nuevo->contacto[i] = NULL;
 				}
 			}
 
