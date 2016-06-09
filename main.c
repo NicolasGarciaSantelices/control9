@@ -3,9 +3,6 @@
 #include <stdlib.h>
 #include "libs/sandbox_utils.h"
 
-#define T 1
-#define CLAVE_LENGTH 2*T
-#define HIJOS_LENGTH (2*T + 1)
 #define LONG_FILENAME 5
 #define NODO_HEADER_LENGTH 5
 

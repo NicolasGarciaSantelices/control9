@@ -1,11 +1,12 @@
 #define LIMIT_NAMES 10
+#define LIMIT_PHONE 13
 
 typedef struct contacto
 {
 	int clave;
 	char nombre[LIMIT_NAMES];
 	char apellido[LIMIT_NAMES];
-	unsigned int telefono;
+	char telefono[LIMIT_PHONE];
 } Contacto;
 
 Contacto* contacto_Crear();
@@ -18,8 +19,9 @@ Contacto* contacto_Crear() {
 	Contacto* nuevo = malloc(sizeof(Contacto));
 	nuevo->clave = -1;
     strcpy(nuevo->nombre, "");
-    strcpy(nuevo->apellido, "");;
-	nuevo->telefono = 0;
+    strcpy(nuevo->apellido, "")
+    //hay que ser demasiado torpe para llamar ese numero equisdeh' hio hio.
+	strcpy(nuevo->telefono, "+569000000000");
 	return nuevo;
 }
 

@@ -1,12 +1,17 @@
 #include "contacto.h"
 
-#define NODOHOJA_HEADER "nodo_h"
+#define NODOHOJA_HEADER 'H'
+
+#define K 74
+#define HOJA_CLAVES 2*K
+ 
 
 //t = 17.
 typedef struct nodo_h
 {
+	int clave;
 	char nombre[LONG_FILENAME];
-	Contacto* contacto[CLAVE_LENGTH];
+	Contacto* contactos[HOJA_CLAVES];
 	int cantidadClaves;
 	char siguiente[LONG_FILENAME];
 } NodoHoja;
@@ -33,25 +38,29 @@ void nodohoja_Guardar(NodoHoja** nodo, char* nombre) {
 	if(nodo != NULL) {
 		FILE* file = fopen(nombre, "wb");
 
-		//Cabezal que indicará el tipo de nodo a guardar.
+		//Cabezal que indicará el tipo de nodo a guardar. (6 * 1 byte = 5 bytes)
 		fwrite(NODOHOJA_HEADER, sizeof(char), NODO_HEADER_LENGTH, file);
 
-		//Nombre del nodo.
+		//Nombre del nodo. (5 * 1 byte = 5 bytes)
 		fwrite((*nodo)->nombre, sizeof(char), LONG_FILENAME, file);
 
-		//Cantidad de Claves.
+		//Cantidad de Claves. (4 bytes)
 		fwrite(&(*nodo)->cantidadClaves, sizeof(int), LONG_FILENAME, file);
 
-		//Siguiente Nodo (Nombre).
+		//Siguiente Nodo (Nombre). (5 * 1 byte = 5 bytes)
 		fwrite((*nodo)->siguiente, sizeof(int), LONG_FILENAME, file);
 
-		//Escribiendo cada contacto.
-		for (int i = 0; i < CLAVE_LENGTH; ++i)
+		//Escribiendo cada contacto. 
+		for (int i = 0; i < HIJOS_LENGTH; ++i)
 		{
 			if((*nodo)->contacto[i] != NULL) {
+				//clave (4 bytes)
 				fwrite(&((*nodo)->contacto[i])->clave, sizeof(int), 1, file);
+				//nombre (10 bytes)
 				fwrite(((*nodo)->contacto[i])->nombre, sizeof(char), LIMIT_NAMES, file);
+				//apellido (10 bytes)
 				fwrite(((*nodo)->contacto[i])->apellido, sizeof(char), LIMIT_NAMES, file);
+				//Telefono (4 bytes por el compilador)
 				fwrite(&((*nodo)->contacto[i])->telefono, sizeof(unsigned int), 1, file);
 			}
 		}
