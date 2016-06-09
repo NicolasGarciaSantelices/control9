@@ -1,0 +1,133 @@
+#include "contacto.h"
+
+#define NODOHOJA_HEADER 'H'
+
+#define K 55
+#define HOJA_CLAVES 2 * K
+
+
+typedef struct nodo_h
+{
+<<<<<<< HEAD
+	char nombre[LONG_FILENAME];
+	Contacto* contacto[CLAVE_LENGTH];
+=======
+	int clave;
+	char nombre[LONG_FILENAME];
+	Contacto* contactos[HOJA_CLAVES];
+>>>>>>> refs/remotes/origin/brdws-changes
+	int cantidadClaves;
+	char siguiente[LONG_FILENAME];
+} NodoHoja;
+
+/*
+	Nodo (Hoja / Interno)
+		> Eliminar contacto del arreglo en nodo.
+*/
+
+NodoHoja* nodohoja_Crear() {
+	NodoHoja* nuevo = malloc(sizeof(NodoHoja));
+	nuevo->clave = 0;
+	nuevo->cantidadClaves = 0;
+	strcpy(nuevo->nombre, "0000");
+	strcpy(nuevo->siguiente, "0000");
+	nuevo->nombre[LONG_FILENAME-1]  = 0;
+	nuevo->siguiente[LONG_FILENAME-1]  = 0;
+
+	for (int i = 0; i < HOJA_CLAVES; ++i)
+	{
+		nuevo->contactos[i] = contacto_Crear();
+	}
+	return nuevo;
+}
+
+void nodohoja_Guardar(NodoHoja** nodo) {
+    char _header = NODOHOJA_HEADER;
+	if(*nodo != NULL) {
+		FILE* file = fopen((*nodo)->nombre, "wb");
+
+		//Cabezal que indicará el tipo de nodo a guardar.
+		fwrite(&_header, sizeof(char),1, file);
+
+		//Nombre del nodo.
+		fwrite((*nodo)->nombre, sizeof(char), LONG_FILENAME, file);
+
+//<<<<<<< HEAD
+/* int LibararHoja(NodoHoja *Hoja,int ){
+	if(Hojas == NULL) return 0;
+	free(hoja->contacto);
+	free(hoja);
+	return 0;
+=======
+		//Cantidad de Claves.
+		fwrite(&(*nodo)->cantidadClaves, sizeof(int), 1, file);
+
+		//Siguiente Nodo (Nombre).
+		fwrite((*nodo)->siguiente, sizeof(int), LONG_FILENAME, file);
+
+		//Escribiendo cada contacto. 
+		for (int i = 0; i < HOJA_CLAVES; ++i)
+		{
+			//clave
+			fwrite(&((*nodo)->contactos[i])->clave, sizeof(int), 1, file);
+			//nombre
+			fwrite(((*nodo)->contactos[i])->nombre, sizeof(char), LIMIT_NAMES, file);
+			//apellido
+			fwrite(((*nodo)->contactos[i])->apellido, sizeof(char), LIMIT_NAMES, file);
+			//Telefono
+			fwrite(((*nodo)->contactos[i])->telefono, sizeof(char), LIMIT_PHONE, file);
+
+		}
+
+		fclose(file);
+	}
+>>>>>>> refs/remotes/origin/brdws-changes
+}
+
+NodoHoja* nodohoja_Cargar(char* nombre) {
+	NodoHoja* nuevo = NULL;
+
+	FILE* fp = fopen(nombre, "rb");
+	if(fp != NULL) {
+
+		//Leyendo el tipo de archivo mediante el cabezal.
+		char _typeHeaderCheck;
+		fread(&_typeHeaderCheck, sizeof(char), 1, fp);
+
+		//Comprobando el tipo de archivo mediante el cabezal.
+		if(_typeHeaderCheck == NODOHOJA_HEADER) {
+			nuevo = nodohoja_Crear();
+
+			//Nombre del nodo
+			fread(nuevo->nombre, sizeof(char), LONG_FILENAME, fp);
+
+			//Cantidad Claves
+			fread(&nuevo->cantidadClaves, sizeof(int), 1, fp);
+
+			//Nombre del nodo siguiente
+			fread(&nuevo->siguiente, sizeof(char), LONG_FILENAME, fp);
+
+			//Lectura de contactos disponibles.
+			for (int i = 0; i < HOJA_CLAVES; ++i)
+			{
+				nuevo->contactos[i] = contacto_Crear();
+				
+				//Si se llega al final del archivo.
+				if(!feof(fp)) {
+					fread(&(nuevo->contactos[i])->clave, sizeof(int), 1, fp);
+					fread((nuevo->contactos[i])->nombre, sizeof(char), LIMIT_NAMES, fp);
+					fread((nuevo->contactos[i])->apellido, sizeof(char), LIMIT_NAMES, fp);
+					fread((nuevo->contactos[i])->telefono, sizeof(char),LIMIT_PHONE, fp);
+				}
+			}
+			fclose(fp);
+		} else {
+			printf("El nodo a cargar no es de tipo hoja.\n");
+		}
+
+	} else {
+		printf("Imposible cargar el nodo hoja: %s\n", nombre);
+	}
+
+	return nuevo;
+}
