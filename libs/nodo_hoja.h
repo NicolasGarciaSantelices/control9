@@ -96,6 +96,8 @@ NodoHoja* nodohoja_Cargar(char* nombre) {
 					nuevo->contacto[i] = NULL;
 				}
 			}
+
+			fclose(fp);
 		} else {
 			printf("El nodo a cargar no es de tipo hoja.\n");
 		}
