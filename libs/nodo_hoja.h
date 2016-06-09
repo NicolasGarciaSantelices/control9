@@ -13,22 +13,25 @@ typedef struct nodo_h
 
 /*
 	Nodo (Hoja / Interno)
-		> CrearNodo.
-		> LiberarNodo.
 		> Eliminar contacto del arreglo en nodo.
-		> Guardar / Cargar.
 */
+
+NodoHoja* nodohoja_Crear() {
+	NodoHoja* nuevo = malloc(sizeof(NodoHoja));
+	strcpy(nuevo->nombre, "");
+	strcpy(nuevo->siguiente, "");
+
+	for (int i = 0; i < CLAVE_LENGTH; ++i)
+	{
+		nuevo->contacto[i] = NULL;
+	}
+	nuevo->cantidadClaves = 0;
+	return nuevo;
+}
 
 void nodohoja_Guardar(NodoHoja** nodo, char* nombre) {
 	if(nodo != NULL) {
-		FILE* file = fopen(nombre, "rb");
-
-		/*
-			Q: 
-			¿Y si implementamos una firma como cabezal 
-			que detecte si el archivo es compatible? 
-			Como una especie de marca de agua.
-		*/
+		FILE* file = fopen(nombre, "wb");
 
 		//Cabezal que indicará el tipo de nodo a guardar.
 		fwrite(NODOHOJA_HEADER, sizeof(char), NODO_HEADER_LENGTH, file);
@@ -70,7 +73,7 @@ NodoHoja* nodohoja_Cargar(char* nombre) {
 		//Comprobando el tipo de archivo mediante el cabezal.
 		if(strcmp(_typeHeaderCheck, NODOHOJA_HEADER) == 0) {
 			//TODO: Crear esto...
-			//nuevo = nodohoja_Crear();
+			nuevo = nodohoja_Crear();
 
 			//Nombre del nodo
 			fread(nuevo->nombre, sizeof(char), LONG_FILENAME, fp);
@@ -87,7 +90,7 @@ NodoHoja* nodohoja_Cargar(char* nombre) {
 				//Si se llega al final del archivo.
 				if(!feof(fp)) {
 					//TODO: Crear esto...
-					//nuevo->contacto[i] = contacto_Crear();
+					nuevo->contacto[i] = contacto_Crear();
 					fread(&(nuevo->contacto[i])->clave, sizeof(int), 1, fp);
 					fread((nuevo->contacto[i])->nombre, sizeof(char), LIMIT_NAMES, fp);
 					fread((nuevo->contacto[i])->apellido, sizeof(char), LIMIT_NAMES, fp);
