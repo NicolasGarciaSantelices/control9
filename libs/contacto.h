@@ -22,21 +22,49 @@ typedef struct contacto
 */
 
 
+
 void contacto_setNombre(Contacto** contacto, char* nombre){
     if((strlen(nombre)+1)<=LIMIT_NAMES) {
     	strcpy((*contacto)->nombre, nombre);
     }else{
-        printf("El nombre ingresado excede el maximo de caracteres permitidos ingrese otro nombre \n");
+        char Nnombre[LIMIT_NAMES];
+        strncpy(Nnombre,nombre,LIMIT_NAMES);
+        Nnombre[LIMIT_NAMES-1]='\0';
+        strcpy((*contacto)->nombre, Nnombre);
+        free(Nnombre);
     }
 }
-
 
 void contacto_setApellido(Contacto** contacto, char* apellido){
 	if((strlen(apellido)+1)<=LIMIT_NAMES) {
 		strcpy((*contacto)->apellido, apellido);
 	}else{
-		printf("El apellido ingresado excede el maximo de caracteres permitidos ingrese otro apellido \n");
+        char Napellido[LIMIT_NAMES];
+        strncpy(Napellido,apellido,LIMIT_NAMES);
+        Napellido[LIMIT_NAMES-1]='\0';
+        strcpy((*contacto)->nombre, Napellido);
+        free(Napellido);
 	}
 }
 
+Contacto* contacto_Crear(char* nombre,char* apellido) {
+    Contacto* nuevo = malloc(sizeof(Contacto));
+    contacto_setNombre(&nuevo, nombre);
+    contacto_setApellido(&nuevo,apellido);
+    nuevo->clave = -1;
+    nuevo->telefono = 0;
+    return nuevo;
+}
+
+
+int contacto_Liberar(Contacto *contacto){
+    if(contacto!=NULL){
+        free(contacto->nombre);
+        free(contacto->apellido);
+        free(contacto);
+        return 1;
+    }else{return 0;
+    
+    }
+}
 
