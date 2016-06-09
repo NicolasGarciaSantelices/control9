@@ -46,7 +46,10 @@ void nodohoja_Guardar(NodoHoja** nodo) {
 
 		//Nombre del nodo.
 		fwrite((*nodo)->nombre, sizeof(char), LONG_FILENAME, file);
-        
+
+		//Clave del Nodo
+		fwrite(&(*nodo)->clave, sizeof(int), 1, file);
+
 		//Cantidad de Claves.
 		fwrite(&(*nodo)->cantidadClaves, sizeof(int), 1, file);
 
@@ -87,25 +90,21 @@ NodoHoja* nodohoja_Cargar(char* nombre) {
 
 			//Nombre del nodo
 			fread(nuevo->nombre, sizeof(char), LONG_FILENAME, fp);
-
+			//Clave del Nodo
+			fread(&nuevo->clave, sizeof(int), 1, fp);
 			//Cantidad Claves
-			fread(&nuevo->cantidadClaves, sizeof(int), 1, fp);
-
+			fread(&(nuevo->cantidadClaves), sizeof(int), 1, fp);
 			//Nombre del nodo siguiente
-			fread(&nuevo->siguiente, sizeof(char), LONG_FILENAME, fp);
+			fread(nuevo->siguiente, sizeof(char), LONG_FILENAME, fp);
 
 			//Lectura de contactos disponibles.
 			for (int i = 0; i < HOJA_CLAVES; ++i)
 			{
-				nuevo->contactos[i] = contacto_Crear();
-				
 				//Si se llega al final del archivo.
-				if(!feof(fp)) {
-					fread(&(nuevo->contactos[i])->clave, sizeof(int), 1, fp);
-					fread((nuevo->contactos[i])->nombre, sizeof(char), LIMIT_NAMES, fp);
-					fread((nuevo->contactos[i])->apellido, sizeof(char), LIMIT_NAMES, fp);
-					fread((nuevo->contactos[i])->telefono, sizeof(char),LIMIT_PHONE, fp);
-				}
+				fread(&(nuevo->contactos[i])->clave, sizeof(int), 1, fp);
+				fread((nuevo->contactos[i])->nombre, sizeof(char), LIMIT_NAMES, fp);
+				fread((nuevo->contactos[i])->apellido, sizeof(char), LIMIT_NAMES, fp);
+				fread((nuevo->contactos[i])->telefono, sizeof(char), LIMIT_PHONE, fp);
 			}
 			fclose(fp);
 		} else {
