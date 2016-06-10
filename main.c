@@ -27,16 +27,18 @@ int main(int argc, char const *argv[])
 {
 	//Hola Mundo!.
 	NodoHoja* t = sandbox_newHoja();
+	Contacto* c1 = contacto_Generar(3, "Bruno", "Rojas", "+56956615239");
+	Contacto* c2 = contacto_Generar(6, "Iracundo", "Canivilo", "+56965863107");
 	nodohoja_Guardar(&t);
+
 
 	t = nodohoja_Cargar("0000");
 
-	printf("clave: %i \n", t->clave);
-	printf("nombre: %s \n", t->nombre);
-	printf("cantidadClaves: %i \n", t->cantidadClaves);
-	printf("nombre (sig): %s \n", t->siguiente);
-	printf("Contacto[0]: Clave: %i\n", (t->contactos[0])->clave);
-	printf("Contacto[0]: Nombre: %s %s\n", (t->contactos[0])->nombre, (t->contactos[0])->apellido);
-	printf("Contacto[0]: Tel.: %s\n", (t->contactos[0])->telefono);
+
+	for (int j = 0; j < HOJA_CLAVES; j++)
+	{
+			printf("Contacto[%i]: [%i] Nombre: %s %s (Tel.: %s)\n", j, (t->contactos[j])->clave, (t->contactos[j])->nombre, (t->contactos[j])->apellido, (t->contactos[j])->telefono);
+	}
+
 	return 0;
 }
