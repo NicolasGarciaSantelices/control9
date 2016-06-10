@@ -146,3 +146,23 @@ void nodohoja_addContacto(NodoHoja **nodo, Contacto* contacto) {
 
     }
 }
+
+
+int nodohoja_eliminarContacto(NodoHoja *nodo, int clave){
+    if(nodo != NULL){
+        int i = 0;
+        while((nodo->contactos[i])->clave != clave){
+            i++;
+        }
+        if(nodo->contactos[i+1] != NULL){
+            for(i; i<nodo->cantidadClaves; i++){
+                nodo->contactos[i] = nodo->contactos[i+1];
+            }
+        }
+        nodo->contactos[i] = NULL;
+        
+    }else{
+        return 0;
+    }
+    return 1;
+}
