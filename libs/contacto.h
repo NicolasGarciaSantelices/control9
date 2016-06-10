@@ -10,6 +10,7 @@ typedef struct contacto
 } Contacto;
 
 Contacto* contacto_Crear();
+Contacto* contacto_Generar(int clave, char* nombre, char* apellido, char* telefono);
 int contacto_Liberar(Contacto* contacto);
 void contacto_setNombre(Contacto** contacto, char* nombre);
 void contacto_setApellido(Contacto** contacto, char* apellido);
@@ -25,7 +26,6 @@ Contacto* contacto_Crear() {
     }
     strcpy(nuevo->nombre, " ");
     strcpy(nuevo->apellido, " ");
-    //hay que ser demasiado torpe para llamar ese numero :P
 	strcpy(nuevo->telefono, "+56900000000");
 	return nuevo;
 }

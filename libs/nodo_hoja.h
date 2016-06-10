@@ -5,7 +5,6 @@
 #define K 55
 #define HOJA_CLAVES 2 * K
 
-
 typedef struct nodo_h
 {
 	int clave;
@@ -14,11 +13,6 @@ typedef struct nodo_h
 	int cantidadClaves;
 	char siguiente[LONG_FILENAME];
 } NodoHoja;
-
-/*
-	Nodo (Hoja / Interno)
-		> Eliminar contacto del arreglo en nodo.
-*/
 
 NodoHoja* nodohoja_Crear() {
 	NodoHoja* nuevo = malloc(sizeof(NodoHoja));
@@ -117,50 +111,3 @@ NodoHoja* nodohoja_Cargar(char* nombre) {
 
 	return nuevo;
 }
-
-/* Funciones como estas partirán desde el siguiente control en adelante. */
-
-/*void nodohoja_addContacto(NodoHoja **nodo, Contacto* contacto) {
-    if((*nodo)->cantidadClaves == 0){
-        (*nodo)->contactos[(*nodo)->cantidadClaves] = contacto;
-        (*nodo)->cantidadClaves++;
-    }else{
-        (*nodo)->contactos[(*nodo)->cantidadClaves] = contacto;
-        //con for's la vida es más sabrosa
-        for (int i = 0; i < (*nodo)->cantidadClaves; ++i)
-        {
-        	for (int j = 0; j < (*nodo)->cantidadClaves - i; ++j)
-        	{
-        		int h = j + 1;                
-        		if(((*nodo)->contactos[j])->clave > ((*nodo)->contactos[h])->clave){
-                    Contacto* a = (*nodo)->contactos[j];
-                    (*nodo)->contactos[j] = (*nodo)->contactos[h];
-                    (*nodo)->contactos[h] = a;
-                }
-        	}
-        }
-        (*nodo)->cantidadClaves++;
-
-    }
-}*/
-
-/*int nodohoja_eliminarContacto(NodoHoja *nodo, int clave){
-    if(nodo != NULL){
-        int i = 0;
-
-        while((nodo->contactos[i])->clave != clave){
-            i++;
-        }
-
-        if(nodo->contactos[i+1] != NULL){
-            for(i; i<nodo->cantidadClaves; i++){
-                nodo->contactos[i] = nodo->contactos[i+1];
-            }
-        }
-
-        nodo->contactos[i] = NULL;
-    }else{
-        return 0;
-    }
-    return 1;
-}*/

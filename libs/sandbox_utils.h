@@ -90,7 +90,9 @@ char* sandbox_getRandomPhone(){
     srand(time(NULL));
     for(int i = 4; i < 11; i++){
     	int d = rand() % 10;
-        telefono[i] = '0' + d;	//int to Char from stackOverflow.
+		/*	Conversión de int a char. 
+			Fuente: http://stackoverflow.com/questions/2279379/how-to-convert-integer-to-char-in-c*/
+        telefono[i] = '0' + d;
     }
     telefono[12] = 0;
     return telefono;
@@ -116,7 +118,6 @@ NodoHoja* sandbox_newHoja() {
 	return nuevo;
 }
 
-
 NodoInterno* sandbox_newInter() {
     NodoInterno* nuevo = nodointer_Crear();
     nuevo->clave = 1;
@@ -125,7 +126,6 @@ NodoInterno* sandbox_newInter() {
     nuevo->nombre[4] = 0;
     NodoHoja* aux = sandbox_newHoja();
     
-    //linkeando
     nuevo->claves[0] = aux->clave;
     strcpy(nuevo->hijos[0], "0000");
     nuevo->cantidadClaves++;

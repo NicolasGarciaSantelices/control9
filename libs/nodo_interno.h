@@ -13,15 +13,10 @@ typedef struct nodo_i
 	int cantidadClaves;
 } NodoInterno;
 
-/*
-	Nodo (Hoja / Interno)
-	> CrearNodo.
-	> LiberarNodo.
-	> Eliminar clave del arreglo en nodo.
-	> Guardar / Cargar.
-*/
-
 NodoInterno* nodointer_Crear();
+NodoInterno* nodointer_Cargar(char *nombre);
+void nodointer_Guardar(NodoInterno* nodo);
+int nodointer_Liberar(NodoInterno *Nodo);
 
 NodoInterno* nodointer_Crear() {
 	NodoInterno* nuevo = malloc(sizeof(NodoInterno));
@@ -42,7 +37,7 @@ NodoInterno* nodointer_Crear() {
 	return nuevo;
 }
 
-int nodointer_Liberar(NodoInterno *Nodo){
+int nodointer_Liberar(NodoInterno *Nodo) {
     if(Nodo!=NULL){
         free(Nodo->nombre);
         free(Nodo->claves);
@@ -54,7 +49,7 @@ int nodointer_Liberar(NodoInterno *Nodo){
     }
 }
 
-NodoInterno* nodointer_cargar(char *nombre){
+NodoInterno* nodointer_Cargar(char *nombre) {
     NodoInterno* nuevo_nodo;
     FILE *file = fopen(nombre, "rb");
 
