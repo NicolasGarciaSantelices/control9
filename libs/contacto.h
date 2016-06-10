@@ -1,21 +1,80 @@
 #define LIMIT_NAMES 10
+#define LIMIT_PHONE 13
 
 typedef struct contacto
 {
 	int clave;
 	char nombre[LIMIT_NAMES];
 	char apellido[LIMIT_NAMES];
-	int telefono;
+	char telefono[LIMIT_PHONE];
 } Contacto;
 
-//TDA Contacto.
-/*
-	1. Creé el contacto. (Reserve memoria)
-	1.5 Cree el contacto (Reserva memoria) junto a un nombre & apellido.
-	2. Set al Nombre & apellido.
+Contacto* contacto_Crear();
+Contacto* contacto_Generar(int clave, char* nombre, char* apellido, char* telefono);
+int contacto_Liberar(Contacto* contacto);
+void contacto_setNombre(Contacto** contacto, char* nombre);
+void contacto_setApellido(Contacto** contacto, char* apellido);
 
-	contacto_setNombre(char* nombre);
-	contacto_setApellido(char* apellido);
 
-	3. Liberar contacto de memoria.>w<
-*/
+Contacto* contacto_Crear() {
+	Contacto* nuevo = malloc(sizeof(Contacto));
+	nuevo->clave = -1;
+    for (int i = 0; i < LIMIT_NAMES; ++i)
+    {
+        nuevo->nombre[i] = 0;
+        nuevo->apellido[i] = 0;
+    }
+    strcpy(nuevo->nombre, " ");
+    strcpy(nuevo->apellido, " ");
+	strcpy(nuevo->telefono, "+56900000000");
+	return nuevo;
+}
+
+
+void contacto_setNombre(Contacto** contacto, char* nombre){
+    if((strlen(nombre)+1) <= LIMIT_NAMES) {
+    	strcpy((*contacto)->nombre, nombre);
+        (*contacto)->nombre[LIMIT_NAMES-1] = 0;
+    }else{
+        char Nnombre[LIMIT_NAMES];
+        strncpy(Nnombre,nombre,LIMIT_NAMES);
+        Nnombre[LIMIT_NAMES-1] = 0;
+        strcpy((*contacto)->nombre, Nnombre);
+    }
+}
+
+void contacto_setApellido(Contacto** contacto, char* apellido){
+	if((strlen(apellido)+1) <= LIMIT_NAMES) {
+		strcpy((*contacto)->apellido, apellido);
+        (*contacto)->apellido[LIMIT_NAMES-1] = 0;
+	}else{
+        char Napellido[LIMIT_NAMES];
+        strncpy(Napellido,apellido,LIMIT_NAMES);
+        Napellido[LIMIT_NAMES-1] = 0;
+        strcpy((*contacto)->apellido, Napellido);
+	}
+}
+
+
+Contacto* contacto_Generar(int clave, char* nombre, char* apellido, char* telefono) {
+    Contacto* nuevo = contacto_Crear();
+    nuevo->clave = clave;
+    contacto_setNombre(&nuevo, nombre);
+    contacto_setApellido(&nuevo, apellido);
+    strcpy(nuevo->telefono, telefono);
+    return nuevo;
+}
+
+
+int contacto_Liberar(Contacto *contacto){
+    if(contacto!=NULL) {
+        free(contacto->nombre);
+        free(contacto->apellido);
+        free(contacto);
+        return 1;
+    }else{
+        return 0;
+    }
+}
+
+
