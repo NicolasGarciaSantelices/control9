@@ -6,13 +6,12 @@
 
 #include "libs/nodo_hoja.h"
 #include "libs/nodo_interno.h"
-
 //Archivo util para funciones de testeo.
 #include "libs/sandbox_utils.h"
 
 /*
 	Evaluación 2, Control 9.
-	> Creación de Arboles B+.
+	:: Creación de Arboles B+.
 
 	Juan Pablo Valdivia.
 	Bruno Rojas Monroy.
@@ -22,16 +21,18 @@
 	Prof. Mauro San Martín.
 */
 
-
 int main(int argc, char const *argv[])
-{
+{ 
+    /*
+		Prueba de Nodos Hoja.
+    */
 	NodoHoja* t = sandbox_newHoja();
-	Contacto* c1 = contacto_Generar(3, "Ktastropher", "Whatever", "+569123456789");
-	Contacto* c2 = contacto_Generar(6, "Iracundo", "Canivilo", "+56935968224");
+	//Contacto* c1 = contacto_Generar(3, "Catastropher", "Whatever", "+569123456789");
+	//Contacto* c2 = contacto_Generar(6, "Iracundo", "Canivilo", "+56935968224");
 
-	nodohoja_addContacto(&t, c1);
-	nodohoja_addContacto(&t, c2);
-
+	//nodohoja_addContacto(&t, c1);
+	//nodohoja_addContacto(&t, c2);
+    
 	for (int j = 0; j < HOJA_CLAVES; j++)
 	{
 		if((t->contactos[j])->clave > -1) printf("Contacto[%i]: [%i] Nombre: %s %s (Tel.: %s)\n", j, (t->contactos[j])->clave, (t->contactos[j])->nombre, (t->contactos[j])->apellido, (t->contactos[j])->telefono);
@@ -41,11 +42,28 @@ int main(int argc, char const *argv[])
 	t = nodohoja_Cargar("0000");
 
 
-	printf("Contactos cargados desde 0000 \n");
+	printf("Contactos cargados desde el fichero: 0000 \n");
 	for (int j = 0; j < HOJA_CLAVES; j++)
 	{
 		if((t->contactos[j])->clave > -1) printf("Contacto[%i]: [%i] Nombre: %s %s (Tel.: %s)\n", j, (t->contactos[j])->clave, (t->contactos[j])->nombre, (t->contactos[j])->apellido, (t->contactos[j])->telefono);
 	}
-	return 0;
+    
+    /*
+		Prueba de Nodos Internos.
+    */
+    
+    NodoInterno* i = sandbox_newInter();
+    
+    nodointer_Guardar(i);
+    
+    printf("Cargando nodo interno: 0001\n");
+    
+    i = nodointer_cargar("0001");
+    
+    printf("Clave[0]: %i\n", i->claves[0]);
+    printf("Hijo[0]: %s\n",i->hijos[0]);
+    
+    
+    return 0;
     
 }

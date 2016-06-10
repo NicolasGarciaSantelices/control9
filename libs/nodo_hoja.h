@@ -118,13 +118,14 @@ NodoHoja* nodohoja_Cargar(char* nombre) {
 	return nuevo;
 }
 
-void nodohoja_addContacto(NodoHoja **nodo, Contacto* contacto) {
+/* Funciones como estas partirán desde el siguiente control en adelante. */
+
+/*void nodohoja_addContacto(NodoHoja **nodo, Contacto* contacto) {
     if((*nodo)->cantidadClaves == 0){
         (*nodo)->contactos[(*nodo)->cantidadClaves] = contacto;
         (*nodo)->cantidadClaves++;
     }else{
         (*nodo)->contactos[(*nodo)->cantidadClaves] = contacto;
-        
         //con for's la vida es más sabrosa
         for (int i = 0; i < (*nodo)->cantidadClaves; ++i)
         {
@@ -141,11 +142,10 @@ void nodohoja_addContacto(NodoHoja **nodo, Contacto* contacto) {
         (*nodo)->cantidadClaves++;
 
     }
-}
+}*/
 
-//TODO: Revisar...
-int nodohoja_eliminarContacto(NodoHoja *nodo, int clave){
-    if(nodo != NULL) {
+/*int nodohoja_eliminarContacto(NodoHoja *nodo, int clave){
+    if(nodo != NULL){
         int i = 0;
 
         while((nodo->contactos[i])->clave != clave){
@@ -163,4 +163,4 @@ int nodohoja_eliminarContacto(NodoHoja *nodo, int clave){
         return 0;
     }
     return 1;
-}
+}*/

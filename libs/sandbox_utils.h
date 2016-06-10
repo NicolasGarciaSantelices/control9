@@ -116,3 +116,19 @@ NodoHoja* sandbox_newHoja() {
 	return nuevo;
 }
 
+
+NodoInterno* sandbox_newInter() {
+    NodoInterno* nuevo = nodointer_Crear();
+    nuevo->clave = 1;
+    
+    strcpy(nuevo->nombre, "0001");
+    nuevo->nombre[4] = 0;
+    NodoHoja* aux = sandbox_newHoja();
+    
+    //linkeando
+    nuevo->claves[0] = aux->clave;
+    strcpy(nuevo->hijos[0], "0000");
+    nuevo->cantidadClaves++;
+    return nuevo;
+
+}

@@ -85,9 +85,9 @@ NodoInterno* nodointer_cargar(char *nombre){
     return nuevo_nodo;
 }
 
-void nodointer_Guardar(NodoInterno* nodo, char* nombre) {
+void nodointer_Guardar(NodoInterno* nodo) {
     char _header = NODOINTER_HEADER;
-	FILE *file = fopen(nombre, "wb");
+	FILE *file = fopen(nodo->nombre, "wb");
 
 	if(nodo != NULL) {
 		if(file != NULL) {
@@ -109,7 +109,7 @@ void nodointer_Guardar(NodoInterno* nodo, char* nombre) {
 
 			fclose(file);
 		} else {
-			printf("Imposible guardar el nodo: %s\n", nombre);
+			printf("Imposible guardar el nodo: %s\n", nodo->nombre);
 		}
 	} else {
 		printf("Hombre!, no me puedes entregar un nodo nulo.\n");
