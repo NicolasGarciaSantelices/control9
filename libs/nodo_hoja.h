@@ -85,7 +85,8 @@ NodoHoja* nodohoja_Cargar(char* nombre) {
 		fread(&_typeHeaderCheck, sizeof(char), 1, fp);
 
 		//Comprobando el tipo de archivo mediante el cabezal.
-		if(_typeHeaderCheck == NODOHOJA_HEADER) {
+		if(_typeHeaderCheck == NODOHOJA_HEADER) 
+		{
 			nuevo = nodohoja_Crear();
 
 			//Nombre del nodo
@@ -110,7 +111,6 @@ NodoHoja* nodohoja_Cargar(char* nombre) {
 		} else {
 			printf("El nodo a cargar no es de tipo hoja.\n");
 		}
-
 	} else {
 		printf("Imposible cargar el nodo hoja: %s\n", nombre);
 	}
@@ -125,42 +125,40 @@ void nodohoja_addContacto(NodoHoja **nodo, Contacto* contacto) {
     }else{
         (*nodo)->contactos[(*nodo)->cantidadClaves] = contacto;
         
-        //TODO: refaccionar bubble-sort
-        int i, j, h;
-        i = 0;
-        while(i < (*nodo)->cantidadClaves){
-            j = 0;
-            while(j < (*nodo)->cantidadClaves - i){
-                h= j + 1;
-                if(((*nodo)->contactos[j])->clave > ((*nodo)->contactos[h])->clave){
-                    //printf("llego hasta aca\n");
+        //con for's la vida es más sabrosa
+        for (int i = 0; i < (*nodo)->cantidadClaves; ++i)
+        {
+        	for (int j = 0; j < (*nodo)->cantidadClaves - i; ++j)
+        	{
+        		int h = j + 1;                
+        		if(((*nodo)->contactos[j])->clave > ((*nodo)->contactos[h])->clave){
                     Contacto* a = (*nodo)->contactos[j];
                     (*nodo)->contactos[j] = (*nodo)->contactos[h];
                     (*nodo)->contactos[h] = a;
                 }
-                j++;
-            }
-            i++;
+        	}
         }
         (*nodo)->cantidadClaves++;
 
     }
 }
 
-
+//TODO: Revisar...
 int nodohoja_eliminarContacto(NodoHoja *nodo, int clave){
-    if(nodo != NULL){
+    if(nodo != NULL) {
         int i = 0;
+
         while((nodo->contactos[i])->clave != clave){
             i++;
         }
+
         if(nodo->contactos[i+1] != NULL){
             for(i; i<nodo->cantidadClaves; i++){
                 nodo->contactos[i] = nodo->contactos[i+1];
             }
         }
+
         nodo->contactos[i] = NULL;
-        
     }else{
         return 0;
     }

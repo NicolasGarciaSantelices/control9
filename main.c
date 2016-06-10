@@ -26,7 +26,7 @@
 int main(int argc, char const *argv[])
 {
 	NodoHoja* t = sandbox_newHoja();
-	Contacto* c1 = contacto_Generar(3, "Catastropher", "Whatever", "+569123456789");
+	Contacto* c1 = contacto_Generar(3, "Ktastropher", "Whatever", "+569123456789");
 	Contacto* c2 = contacto_Generar(6, "Iracundo", "Canivilo", "+56935968224");
 
 	nodohoja_addContacto(&t, c1);
