@@ -28,5 +28,19 @@ int main(int argc, char const *argv[])
 	//Hola Mundo!.
 	NodoHoja* t = sandbox_newHoja();
 	nodohoja_Guardar(&t);
+
+	t = nodohoja_Cargar("0000");
+
+	printf("clave: %i \n", t->clave);
+	printf("nombre: %s \n", t->nombre);
+	printf("cantidadClaves: %i \n", t->cantidadClaves);
+	printf("nombre (sig): %s \n", t->siguiente);
+	printf("Contacto[0]: Clave: %i\n", (t->contactos[1])->clave);
+	printf("Contacto[0]: Nombre: %s %s\n", (t->contactos[1])->nombre,(t->contactos[1])->apellido);
+	printf("Contacto[0]: Tel.: %s\n", (t->contactos[1])->telefono);
+	
+	eliminar_contacto(t,10);
+	
 	return 0;
+	
 }

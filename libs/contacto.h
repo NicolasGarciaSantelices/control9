@@ -1,3 +1,4 @@
+
 #define LIMIT_NAMES 10
 #define LIMIT_PHONE 13
 
@@ -15,8 +16,8 @@ void contacto_setNombre(Contacto** contacto, char* nombre);
 void contacto_setApellido(Contacto** contacto, char* apellido);
 
 
-Contacto *contacto_Crear() {
-	Contacto *nuevo = malloc(sizeof(Contacto));
+Contacto* contacto_Crear() {
+	Contacto* nuevo = malloc(sizeof(Contacto));
 	nuevo->clave = -1;
     int i;
 	for (i = 0; i < LIMIT_NAMES; ++i)
@@ -57,16 +58,14 @@ void contacto_setApellido(Contacto** contacto, char* apellido){
 	}
 }
 
-/*
-Contacto* contacto_Crear(char* nombre,char* apellido) {
-    Contacto* nuevo = malloc(sizeof(Contacto));
+Contacto* contacto_Generar(int clave, char* nombre, char* apellido, char* telefono) {
+    Contacto* nuevo = contacto_Crear();
+    nuevo->clave = clave;
     contacto_setNombre(&nuevo, nombre);
     contacto_setApellido(&nuevo, apellido);
-    nuevo->clave = -1;
-    nuevo->telefono = 0;
+    strcpy(nuevo->telefono, telefono);
     return nuevo;
-}*/
-
+}
 
 int contacto_Liberar(Contacto *contacto){
     if(contacto!=NULL) {

@@ -8,14 +8,9 @@
 
 typedef struct nodo_h
 {
-<<<<<<< HEAD
-	char nombre[LONG_FILENAME];
-	Contacto* contacto[CLAVE_LENGTH];
-=======
 	int clave;
 	char nombre[LONG_FILENAME];
-	Contacto* contactos[HOJA_CLAVES];
->>>>>>> refs/remotes/origin/brdws-changes
+	Contacto *contactos[HOJA_CLAVES];
 	int cantidadClaves;
 	char siguiente[LONG_FILENAME];
 } NodoHoja;
@@ -33,8 +28,8 @@ NodoHoja* nodohoja_Crear() {
 	strcpy(nuevo->siguiente, "0000");
 	nuevo->nombre[LONG_FILENAME-1]  = 0;
 	nuevo->siguiente[LONG_FILENAME-1]  = 0;
-
-	for (int i = 0; i < HOJA_CLAVES; ++i)
+	int i;
+	for (i = 0; i < HOJA_CLAVES; ++i)
 	{
 		nuevo->contactos[i] = contacto_Crear();
 	}
@@ -52,21 +47,18 @@ void nodohoja_Guardar(NodoHoja** nodo) {
 		//Nombre del nodo.
 		fwrite((*nodo)->nombre, sizeof(char), LONG_FILENAME, file);
 
-//<<<<<<< HEAD
-/* int LibararHoja(NodoHoja *Hoja,int ){
-	if(Hojas == NULL) return 0;
-	free(hoja->contacto);
-	free(hoja);
-	return 0;
-=======
+		//Clave del Nodo
+		fwrite(&(*nodo)->clave, sizeof(int), 1, file);
+
 		//Cantidad de Claves.
 		fwrite(&(*nodo)->cantidadClaves, sizeof(int), 1, file);
 
 		//Siguiente Nodo (Nombre).
-		fwrite((*nodo)->siguiente, sizeof(int), LONG_FILENAME, file);
+		fwrite((*nodo)->siguiente, sizeof(char), LONG_FILENAME, file);
 
 		//Escribiendo cada contacto. 
-		for (int i = 0; i < HOJA_CLAVES; ++i)
+		int i;
+		for (i = 0; i < HOJA_CLAVES; ++i)
 		{
 			//clave
 			fwrite(&((*nodo)->contactos[i])->clave, sizeof(int), 1, file);
@@ -81,7 +73,6 @@ void nodohoja_Guardar(NodoHoja** nodo) {
 
 		fclose(file);
 	}
->>>>>>> refs/remotes/origin/brdws-changes
 }
 
 NodoHoja* nodohoja_Cargar(char* nombre) {
@@ -100,25 +91,22 @@ NodoHoja* nodohoja_Cargar(char* nombre) {
 
 			//Nombre del nodo
 			fread(nuevo->nombre, sizeof(char), LONG_FILENAME, fp);
-
+			//Clave del Nodo
+			fread(&nuevo->clave, sizeof(int), 1, fp);
 			//Cantidad Claves
-			fread(&nuevo->cantidadClaves, sizeof(int), 1, fp);
-
+			fread(&(nuevo->cantidadClaves), sizeof(int), 1, fp);
 			//Nombre del nodo siguiente
-			fread(&nuevo->siguiente, sizeof(char), LONG_FILENAME, fp);
+			fread(nuevo->siguiente, sizeof(char), LONG_FILENAME, fp);
 
 			//Lectura de contactos disponibles.
-			for (int i = 0; i < HOJA_CLAVES; ++i)
+			int i;
+			for (i = 0; i < HOJA_CLAVES; ++i)
 			{
-				nuevo->contactos[i] = contacto_Crear();
-				
 				//Si se llega al final del archivo.
-				if(!feof(fp)) {
-					fread(&(nuevo->contactos[i])->clave, sizeof(int), 1, fp);
-					fread((nuevo->contactos[i])->nombre, sizeof(char), LIMIT_NAMES, fp);
-					fread((nuevo->contactos[i])->apellido, sizeof(char), LIMIT_NAMES, fp);
-					fread((nuevo->contactos[i])->telefono, sizeof(char),LIMIT_PHONE, fp);
-				}
+				fread(&(nuevo->contactos[i])->clave, sizeof(int), 1, fp);
+				fread((nuevo->contactos[i])->nombre, sizeof(char), LIMIT_NAMES, fp);
+				fread((nuevo->contactos[i])->apellido, sizeof(char), LIMIT_NAMES, fp);
+				fread((nuevo->contactos[i])->telefono, sizeof(char), LIMIT_PHONE, fp);
 			}
 			fclose(fp);
 		} else {
@@ -131,3 +119,59 @@ NodoHoja* nodohoja_Cargar(char* nombre) {
 
 	return nuevo;
 }
+
+void nodohoja_addContacto(NodoHoja **nodo,int clave, char* nombre, char* apellido, char* telefono){
+    if(((*nodo)->cantidadClaves)==0){
+        (*nodo)->contactos[(*nodo)->cantidadClaves]=contacto_Generar(clave,nombre,apellido,telefono);
+        (*nodo)->cantidadClaves++;
+    }else{
+        (*nodo)->contactos[(*nodo)->cantidadClaves]=contacto_Generar(clave,nombre,apellido,telefono);
+        int i,j,h;
+        i=0;
+        while(i<(*nodo)->cantidadClaves){
+            j=0;
+            while(j<((*nodo)->cantidadClaves)-i){
+                h=j+1;
+                if(((*nodo)->contactos[j])->clave>((*nodo)->contactos[h])->clave){
+                    printf("llego hasta aca\n");
+                    Contacto* a;
+                    a=(*nodo)->contactos[j];
+                    (*nodo)->contactos[j]=(*nodo)->contactos[h];
+                    (*nodo)->contactos[h]=a;
+                }j++;
+            }i++;
+        }(*nodo)->cantidadClaves++;
+    }
+}
+
+int eliminar_contacto(NodoHoja *nodo,int clave){
+	if(nodo != NULL){
+		int i = 0;
+		while((nodo->contactos[i])->clave != clave){
+			i++;
+		}
+		if(nodo->contactos[i+1] != NULL){
+			for(i;i<nodo->cantidadClaves;i++){
+				nodo->contactos[i] = nodo->contactos[i+1];
+			}
+		}
+		nodo->contactos[i] = NULL;
+		
+	}else{
+		return 0;
+	}
+	return 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

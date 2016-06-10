@@ -25,17 +25,18 @@ NodoInterno* nodointer_Crear();
 
 NodoInterno* nodointer_Crear() {
 	NodoInterno* nuevo = malloc(sizeof(NodoInterno));
-
-	for (int j = 0; j < LONG_FILENAME; ++j)
+	
+	int j;
+	for (j = 0; j < LONG_FILENAME; ++j)
 			nuevo->nombre[j] = 0;
-
-	for (int i = 0; i < INTER_HIJOS; ++i)
+	int i;
+	for (i = 0; i < INTER_HIJOS; ++i)
 	{
-		for (int j = 0; j < LONG_FILENAME; ++j)
+		for (j = 0; j < LONG_FILENAME; ++j)
 			nuevo->hijos[i][j] = 0;
 	}
 
-	for (int i = 0; i < INTER_CLAVES; ++i)
+	for (i = 0; i < INTER_CLAVES; ++i)
 		nuevo->claves[i] = -1;
 
 	nuevo->cantidadClaves = 0;
@@ -67,7 +68,8 @@ NodoInterno* nodointer_cargar(char *nombre){
             fread(nuevo_nodo->nombre, sizeof(char), LONG_FILENAME, file);
             fread(nuevo_nodo->claves, sizeof(int), INTER_CLAVES, file);
             fread(&nuevo_nodo->cantidadClaves, sizeof(int), 1, file);
-            for (int i = 0; i < INTER_HIJOS; ++i)
+            int i;
+			for (i = 0; i < INTER_HIJOS; ++i)
             {
                 if(!feof(file)) {
                     fread(nuevo_nodo->hijos[i], sizeof(char),LONG_FILENAME, file);
@@ -102,7 +104,8 @@ void nodointer_Guardar(NodoInterno* nodo, char* nombre) {
 			fwrite(nodo->claves, sizeof(int), INTER_CLAVES, file);
 
 			//Nombre de los hijos
-			for (int i = 0; i < INTER_HIJOS; ++i)
+			int i;
+			for (i = 0; i < INTER_HIJOS; ++i)
 			{
 				fwrite(nodo->hijos[i], sizeof(char), LONG_FILENAME, file);
 			}
