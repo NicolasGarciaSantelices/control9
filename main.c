@@ -26,16 +26,25 @@
 int main(int argc, char const *argv[])
 {
 	NodoHoja* t = sandbox_newHoja();
-	Contacto* c1 = contacto_Generar(3, "Bruno", "Rojas", "+56956615239");
-	Contacto* c2 = contacto_Generar(6, "Iracundo", "Canivilo", "+56965863107");
-	nodohoja_Guardar(&t);
+	Contacto* c1 = contacto_Generar(3, "Catastropher", "Whatever", "+569123456789");
+	Contacto* c2 = contacto_Generar(6, "Iracundo", "Canivilo", "+56935968224");
 
-	t = nodohoja_Cargar("0000");
-
+	nodohoja_addContacto(&t, c1);
+	nodohoja_addContacto(&t, c2);
 
 	for (int j = 0; j < HOJA_CLAVES; j++)
 	{
-			printf("Contacto[%i]: [%i] Nombre: %s %s (Tel.: %s)\n", j, (t->contactos[j])->clave, (t->contactos[j])->nombre, (t->contactos[j])->apellido, (t->contactos[j])->telefono);
+		if((t->contactos[j])->clave > -1) printf("Contacto[%i]: [%i] Nombre: %s %s (Tel.: %s)\n", j, (t->contactos[j])->clave, (t->contactos[j])->nombre, (t->contactos[j])->apellido, (t->contactos[j])->telefono);
+	}
+
+	nodohoja_Guardar(&t);
+	t = nodohoja_Cargar("0000");
+
+
+	printf("Contactos cargados desde 0000 \n");
+	for (int j = 0; j < HOJA_CLAVES; j++)
+	{
+		if((t->contactos[j])->clave > -1) printf("Contacto[%i]: [%i] Nombre: %s %s (Tel.: %s)\n", j, (t->contactos[j])->clave, (t->contactos[j])->nombre, (t->contactos[j])->apellido, (t->contactos[j])->telefono);
 	}
 	return 0;
     
