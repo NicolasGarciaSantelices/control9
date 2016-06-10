@@ -117,3 +117,31 @@ NodoHoja* nodohoja_Cargar(char* nombre) {
 
 	return nuevo;
 }
+
+
+
+void nodohoja_addContacto(NodoHoja **nodo,int clave, char* nombre, char* apellido, char* telefono){
+    if(((*nodo)->cantidadClaves)==0){
+        (*nodo)->contactos[(*nodo)->cantidadClaves]=contacto_Generar(clave,nombre,apellido,telefono);
+        (*nodo)->cantidadClaves++;
+    }else{
+        (*nodo)->contactos[(*nodo)->cantidadClaves]=contacto_Generar(clave,nombre,apellido,telefono);
+        int i,j,h;
+        i=0;
+        while(i<(*nodo)->cantidadClaves){
+            j=0;
+            while(j<((*nodo)->cantidadClaves)-i){
+                h=j+1;
+                if(((*nodo)->contactos[j])->clave>((*nodo)->contactos[h])->clave){
+                    printf("llego hasta aca\n");
+                    Contacto* a;
+                    a=(*nodo)->contactos[j];
+                    (*nodo)->contactos[j]=(*nodo)->contactos[h];
+                    (*nodo)->contactos[h]=a;
+                }j++;
+            }i++;
+        }(*nodo)->cantidadClaves++;
+
+    }
+}
+
